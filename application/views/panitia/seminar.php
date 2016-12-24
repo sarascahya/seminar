@@ -105,8 +105,8 @@
             <a class="btn btn-primary btn-flat" href="<?php echo site_url('panitia/editSeminar/'.$seminar[$i]->id)?>">Edit</a>
             <!-- <a class="btn btn-danger btn-flat" href="<?php echo site_url('panitia/hapusSeminar/'.$seminar[$i]->id)?>">Hapus</a> -->
             <a onclick="hapus('<?php echo $seminar[$i]->id; ?>')" class="btn btn-danger btn-flat"> Hapus</a>
-            <a class="btn bg-purple btn-flat" href="#">Absensi</a>
             <a class="btn bg-maroon btn-flat" href="<?php echo site_url('panitia/lihatLaporanSeminar/'.$seminar[$i]->id)?>">Laporan</a>
+            <a class="btn bg-purple btn-flat" href="<?php echo site_url('panitia/managePesertaById/'.$seminar[$i]->id)?>">Manage Peserta</a>
             <a href="<?php echo site_url('panitia/lihatDetailSeminar/'.$seminar[$i]->id)?>" class="btn pull-right">Detail Seminar</a>
           </div><!-- /.box-footer-->
         </div><!-- /.box -->

@@ -100,7 +100,6 @@
                             <h3 class="box-title"><?php echo $seminar[$i]->judul;?></h3>
                         </div>
                         <div class="box-body">
-                            <div class="row">
                                 <div class="col-xs-4">
                                     <img src="<?php echo base_url('uploads/seminar/').$seminar[$i]->foto;?>" width="130" height="130">
                                 </div>
@@ -126,8 +125,7 @@
                                         </tr>
                                     </table>
                                 </div>
-                            </div>
-                        </div><!-- /.box-body -->
+                        </div>
                         <div class="box-footer">
                             <?php
                                 if ($kuota_peserta[$i]<100) { ?>
@@ -137,8 +135,8 @@
                             ?>
                         
                             <a href="<?php echo site_url('web/detailSeminar/'.$seminar[$i]->id)?>" class="btn pull-right">Detail Seminar</a>
-                        </div><!-- /.box-footer-->
-                    </div><!-- /.box -->
+                        </div>
+                    </div>
                 </div>
                 <?php
                     }

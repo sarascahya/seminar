@@ -304,7 +304,7 @@ class panitia extends CI_Controller{
         $message = "swal('Berhasil!', 'Status Pembayaran peserta LUNAS', 'success');";
         $this->session->set_flashdata('notification', $message);
 
-        redirect('panitia/lihatDetailSeminar/'.$id_seminar,'refresh');
+        redirect('panitia/managePesertaById/'.$id_seminar,'refresh');
     }
 
     function lihatLaporanSeminar(){
@@ -367,5 +367,42 @@ class panitia extends CI_Controller{
 
         $this->load->view('seminar/laporan_seminar_cetak', $data);
 
+    }
+
+    function managePesertaById(){
+        $data['title'] = 'Manage Peserta Seminar';
+        $id_seminar = $this->uri->segment(3);
+        $data['seminar'] = $this->m_seminar->allSeminar($id_seminar)->result();
+        $data['seminar'][0]->harga = $this->converter->convert(intval($data['seminar'][0]->harga));
+        $data['seminar'][0]->tanggal = $this->dateconverter->dbToView($data['seminar'][0]->tanggal);
+
+        $data['semua_peserta'] = $this->m_peserta_seminar->selectSemuaPeserta($id_seminar)->result();
+        $data['jml_peserta'] = count($data['semua_peserta']);
+        for ($i=0; $i < $data['jml_peserta']; $i++) { 
+            $data['semua_peserta'][$i]->tgl_daftar = $this->dateconverter->dbTimeStampToView($data['semua_peserta'][$i]->tgl_daftar);
+        }
+
+        $data['semua_peserta_bayar'] = $this->m_peserta_seminar->semuaPesertaLunas($id_seminar)->result();
+        $data['jml_peserta_bayar'] = count($data['semua_peserta_bayar']);
+        for ($i=0; $i < $data['jml_peserta_bayar']; $i++) { 
+            $data['semua_peserta_bayar'][$i]->tgl_daftar = $this->dateconverter->dbTimeStampToView($data['semua_peserta_bayar'][$i]->tgl_daftar);
+        }
+        
+        $data['semua_peserta_blm_bayar'] = $this->m_peserta_seminar->semuaPesertaBlmLunas($id_seminar)->result();
+        $data['jml_peserta_blm_bayar'] = count($data['semua_peserta_blm_bayar']);
+        for ($i=0; $i < $data['jml_peserta_blm_bayar']; $i++) { 
+            $data['semua_peserta_blm_bayar'][$i]->tgl_daftar = $this->dateconverter->dbTimeStampToView($data['semua_peserta_blm_bayar'][$i]->tgl_daftar);
+        }
+
+        $peserta_bayar = intval($data['jml_peserta_bayar']);
+        $target_peserta = intval($data['seminar'][0]->peserta);
+        $data['kuota_peserta'] = $peserta_bayar/$target_peserta*100;
+       
+        $this->template->display('seminar/manage_peserta_seminar', $data);
+
+    }
+
+    function ubahStatusHadirPeserta(){
+        
     }
 }
