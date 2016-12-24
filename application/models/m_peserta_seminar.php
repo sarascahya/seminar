@@ -75,12 +75,13 @@ class M_peserta_seminar extends CI_Model {
 	}
 
 	function semuaPesertaLunas($id_seminar){
-		$this->db->select('a.id_peserta, a.status_bayar, a.id_seminar, a.tgl_daftar, a.tgl_bayar, b.id, b.nama_lengkap, b.instansi, b.email,b.no_telp, c.id as idTabelSeminar, c.harga');
+		$this->db->select('a.id_peserta_seminar, a.id_peserta, a.status_bayar, a.id_seminar, a.tgl_daftar, a.tgl_bayar, b.id, b.nama_lengkap, b.instansi, b.email,b.no_telp, c.id as idTabelSeminar, c.harga');
 		$this->db->from('peserta_seminar as a');
 		//$this->db->select('*');
 		//$this->db->from('peserta_seminar');
 		$this->db->where('id_seminar', $id_seminar);
 		$this->db->where('status_bayar', 1);
+		$this->db->where('status_hadir', 0);
 
 		$this->db->join('peserta as b', 'a.id_peserta = b.id');
 		$this->db->join('seminar as c', 'a.id_seminar = c.id');
@@ -102,7 +103,28 @@ class M_peserta_seminar extends CI_Model {
 		return $this->db->get();
 	}
 
+	function semuaPesertaHadir($id_seminar){
+		$this->db->select('a.id_peserta_seminar, a.id_peserta, a.status_bayar, a.id_seminar, a.tgl_daftar, a.tgl_bayar, b.id, b.nama_lengkap, b.instansi, b.email,b.no_telp, c.id as idTabelSeminar, c.harga');
+		$this->db->from('peserta_seminar as a');
+		//$this->db->select('*');
+		//$this->db->from('peserta_seminar');
+		$this->db->where('id_seminar', $id_seminar);
+		$this->db->where('status_bayar', 1);
+		$this->db->where('status_hadir', 1);
+
+		$this->db->join('peserta as b', 'a.id_peserta = b.id');
+		$this->db->join('seminar as c', 'a.id_seminar = c.id');
+
+		return $this->db->get();
+	}
+
 	function ubahStatusBayar($data){
+		$this->db->where('id_peserta_seminar', $data['id_peserta_seminar']);
+		$this->db->from('peserta_seminar');
+		$this->db->update('peserta_seminar', $data);
+	}
+
+	function ubahStatusHadir($data){
 		$this->db->where('id_peserta_seminar', $data['id_peserta_seminar']);
 		$this->db->from('peserta_seminar');
 		$this->db->update('peserta_seminar', $data);

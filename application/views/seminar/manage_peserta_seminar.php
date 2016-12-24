@@ -201,9 +201,10 @@
                             <td><?php echo $peserta->instansi;?></td>
                             <td><?php echo $peserta->tgl_daftar;?></td>
                             <td>Lunas</td>
-                            <td><center><a href="" class="btn btn-success btn-flat"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></a></center></td>
+                            <td><center><a onclick="absen('<?php echo $peserta->id; ?>', '<?php echo $peserta->nama_lengkap; ?>','<?php echo $seminar[0]->id; ?>','<?php echo $peserta->id_peserta_seminar; ?>')" class="btn btn-success btn-flat"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></a></center></td>
                             
                           </tr>
+
                           <?php $no++;} ?>
                         </table>
                       <?php 
@@ -214,7 +215,45 @@
                   </div>
 
                   <div class="tab-pane" id="tab_5">
-                    
+                    <?php 
+                        if ($jml_peserta_hadir>0) {
+                        ?>
+                        <h4>Total : <?php echo $jml_peserta_hadir;?></h4>
+                          <table class="table table-striped">
+                          <tr>
+                            <th>No</th>
+                            <th>Nama Peserta</th>
+                            <th>Email</th>
+                            <th>No HP</th>
+                            <th>Instansi</th>
+                            <th>Tanggal Daftar</th>
+                            <th>Status</th>
+                          </tr>
+                          <?php
+                            $no=1;
+                            foreach ($semua_peserta_hadir as $peserta) {
+                              # code...
+                            
+                          ?>
+                          <tr>
+                            <td><?php echo $no;?></td>
+                            <td><?php echo $peserta->nama_lengkap;?></td>
+                            <td><?php echo $peserta->email;?></td>
+                            <td><?php echo $peserta->no_telp;?></td>
+                            <td><?php echo $peserta->instansi;?></td>
+                            <td><?php echo $peserta->tgl_daftar;?></td>
+                            <td>Hadir</td>
+                            
+                            
+                          </tr>
+
+                          <?php $no++;} ?>
+                        </table>
+                      <?php 
+                        } else { 
+                          echo "<h5>Belum ada peserta yang melunasi pembayaran</h5>";
+                        }
+                      ?>
                   </div>
 
 
@@ -235,26 +274,27 @@
 </div><!-- /.content-wrapper -->
 
 <script type="text/javascript">
-  function hapus(id){
+  
+  function absen(id_peserta, nama, id_seminar, id_peserta_seminar){
     swal({
-      title: "Yakin ingin menghapus ?",
-      text: "Data akan dihapus dari sistem",
+      title: "Absen "+nama,
+      text: "Dengan nomor tiket "+id_peserta,
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Ya, Hapus!",
-      cancelButtonText: "Tidak, Batal!",
+      confirmButtonText: "Lanjutkan",
+      cancelButtonText: "Batalkan",
       closeOnConfirm: false,
       closeOnCancel: false
     },
 
     function(isConfirm){
       if (isConfirm) {
-        var link = "<?php echo site_url('panitia/hapusSeminar/'); ?>"+id;
+        var link = "<?php echo site_url('panitia/absenPeserta/'); ?>"+id_peserta_seminar+'/'+id_seminar;
         window.location = link;
         //swal("Terhapus!", "Data seminar berhasil dihapus", "success");
       } else {
-        swal("Batal", "Anda batal menghapus", "error");
+        swal("Batal", "Anda batal mengabsen", "error");
       }
     });
   }

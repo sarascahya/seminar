@@ -263,6 +263,7 @@ class peserta extends CI_Controller{
         $data['id_seminar'] = $id_seminar;
         $data['tgl_daftar'] = NULL;
         $data['status_bayar'] = 0;
+        $data['status_hadir'] = 0;
 
         //$this->m_peserta_seminar->tambahPesertaSeminar($data);
         //redirect('peserta','refresh');

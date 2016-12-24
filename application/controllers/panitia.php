@@ -300,7 +300,6 @@ class panitia extends CI_Controller{
 
         $this->m_peserta_seminar->ubahStatusBayar($data);
         $id_seminar = $this->input->post('id_seminar');
-        //echo "sukses";
         $message = "swal('Berhasil!', 'Status Pembayaran peserta LUNAS', 'success');";
         $this->session->set_flashdata('notification', $message);
 
@@ -373,8 +372,8 @@ class panitia extends CI_Controller{
         $data['title'] = 'Manage Peserta Seminar';
         $id_seminar = $this->uri->segment(3);
         $data['seminar'] = $this->m_seminar->allSeminar($id_seminar)->result();
-        $data['seminar'][0]->harga = $this->converter->convert(intval($data['seminar'][0]->harga));
-        $data['seminar'][0]->tanggal = $this->dateconverter->dbToView($data['seminar'][0]->tanggal);
+        //$data['seminar'][0]->harga = $this->converter->convert(intval($data['seminar'][0]->harga));
+        //$data['seminar'][0]->tanggal = $this->dateconverter->dbToView($data['seminar'][0]->tanggal);
 
         $data['semua_peserta'] = $this->m_peserta_seminar->selectSemuaPeserta($id_seminar)->result();
         $data['jml_peserta'] = count($data['semua_peserta']);
@@ -394,15 +393,37 @@ class panitia extends CI_Controller{
             $data['semua_peserta_blm_bayar'][$i]->tgl_daftar = $this->dateconverter->dbTimeStampToView($data['semua_peserta_blm_bayar'][$i]->tgl_daftar);
         }
 
-        $peserta_bayar = intval($data['jml_peserta_bayar']);
-        $target_peserta = intval($data['seminar'][0]->peserta);
-        $data['kuota_peserta'] = $peserta_bayar/$target_peserta*100;
+        $data['semua_peserta_hadir'] = $this->m_peserta_seminar->semuaPesertaHadir($id_seminar)->result();
+        $data['jml_peserta_hadir'] = count($data['semua_peserta_hadir']);
+        for ($i=0; $i < $data['jml_peserta_hadir']; $i++) { 
+            $data['semua_peserta_hadir'][$i]->tgl_daftar = $this->dateconverter->dbTimeStampToView($data['semua_peserta_hadir'][$i]->tgl_daftar);
+        }
+
+        //$peserta_bayar = intval($data['jml_peserta_bayar']);
+        //$target_peserta = intval($data['seminar'][0]->peserta);
+        //$data['kuota_peserta'] = $peserta_bayar/$target_peserta*100;
        
         $this->template->display('seminar/manage_peserta_seminar', $data);
 
     }
 
-    function ubahStatusHadirPeserta(){
+    function absenPeserta(){
+
+        $data['id_seminar'] = $this->uri->segment(4);
+        //$data['title'] = 'Manage Peserta Seminar';
+        $data['id_peserta_seminar'] = $this->uri->segment(3);
+
+        //$data['id_seminar'] = $this->uri->segment(4);
+        $data['status_hadir'] = 1;
+        //echo "id_peserta : ".$id_peserta;
+        //echo "<br>id_seminar : ".$id_seminar;
+
+        $this->m_peserta_seminar->ubahStatusHadir($data);
         
+        $message = "sweetAlert('Berhasil!', 'Peserta sudah diabsen', 'success');";
+        $this->session->set_flashdata('notification', $message);
+
+        redirect('panitia/managePesertaById/'.$data['id_seminar']);
+
     }
 }
