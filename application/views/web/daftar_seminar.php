@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SistemiPNB</title>
+    <title>SinarPNB</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -57,7 +57,7 @@
   		<header class="main-header">
 		  	<a href="<?php echo site_url('web');?>" class="logo">
 		    <!-- LOGO -->
-		    	SistemiPNB
+		    	SinarPNB
 		  	</a>
             <script type="text/javascript">
       <?php echo $this->session->flashdata('notification');?>
